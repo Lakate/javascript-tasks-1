@@ -1,60 +1,83 @@
 var hours = process.argv[2];
 var minutes = process.argv[3];
-var answerHour = '';
-var answerMinutes = '';
+var answerHour;
+var answerMinutes;
 
-if (hours < 0 || hours > 24 || minutes < 0 || minutes > 59) {
+if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
 	console.log('Время указано неверно');
 } else {
-	if (hours == 0)
-		answerHour += 'O';
-	if (minutes == 0)
-		answerMinutes += 'O';
-	getX();
-	answerHour = getUnits(hours, answerHour);
-	answerMinutes = getUnits(minutes,  answerMinutes);
-	console.log(answerHour + ':' + answerMinutes);
+	if (hours == 0) {
+		answerHour = '-';
+	} else {
+		answerHour = getTime(hours);
+	}
+
+	if (minutes == 0) {
+		answerMinutes = '-';
+	} else {
+		answerMinutes = getTime(minutes);
+	}
+	print(answerHour + ':' + answerMinutes);
 }
 
-function integerDivision(x, y){
-    return (x-x%y)/y
-}
+function getTime(time) {
+	/* функция, переводящая числа из арабских в римские.
+	*  параметр: time - число, которое надо перевести.*/
+	var roman = ['L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
+	var arab = [50, 40, 10, 9, 5, 4, 1];
+	var answer = '';
+	var i = 0;
 
-function getX() {
-/* Получаем десятки */
-	var xHours = integerDivision(hours, 10);
-	var xMinutes = integerDivision(minutes, 10);
-
-	if (xHours > 0 || xMinutes > 0) {
-		for (var count = 0; count < xHours; count++) 
-			answerHour += 'X';
-		hours %= 10;
-
-		if (xMinutes < 4) {
-			for (var count=0; count < xMinutes; count++) 
-				answerMinutes += 'X';
-		} else {
-			answerMinutes = xMinutes == 4 ? answerMinutes + 'XL' : answerMinutes + 'L'
+	while (time > 0) {
+		while (arab[i] <= time) {
+			answer += roman[i];
+			time -= arab[i];
 		}
-		minutes %= 10;
+		i++;
+	}
+	return answer;
+}
+
+function print(time) {
+	/* функция, выводящая ответ на экран
+	*  параметр: time - строка, в которой хранится ответ, который надо вывести*/
+	var answer = ['', '', '', ''];
+
+	for (var count = 0; count < time.length; count++) {
+		var char = getASCII(time.charAt(count));
+		for (var i = 0; i < answer.length; i++) {
+			answer[i] += char[i];
+		}
+	}
+	for (var i = 0; i < answer.length; i++) {
+		console.log(answer[i]);
 	}
 }
 
-function getUnits(time, answer) {
-/* Получаем единицы */
-	if (time == 9)
-		answer += 'IX'
-	else {
-		var temp = integerDivision(time, 5);
-		if (temp > 0) {
-			answer += 'V';
-			time %= 5;
-		}
-		if (time == 4) 
-			answer += 'IV';
-		else
-			for (var count=0; count < time; count++) 
-				answer += 'I';
+function getASCII(char) {
+	/* функция, переводящаю символ в ASCII вид
+	*  параметр: char - символ, который надо перевести*/
+	var answer = new Array();
+
+	switch (char) {
+		case 'I':
+			answer = [' ******* ','    *    ', '    *    ', ' ******* '];
+			break;
+		case 'V':
+			answer = [' *     * ', '  *   *  ', '   * *   ', '    *    '];
+			break;
+		case 'X':
+			answer = [' *     * ', '   * *   ', '   * *   ', ' *     * '];
+			break;
+		case 'L':
+			answer = ['  *      ', '  *      ', '  *      ', '  * * *  '];
+			break;
+		case ':':
+			answer = ['         ', '  ** **  ', '  ** **  ', '         '];
+			break;
+		case  '-':
+			answer = ['         ', '          ', '   ****   ', '        '];
+			break;
 	}
 	return answer;
 }
