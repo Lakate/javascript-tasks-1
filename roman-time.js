@@ -20,9 +20,9 @@ if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
 	print(answerHour + ':' + answerMinutes);
 }
 
+/* функция, переводящая числа из арабских в римские.
+ *  параметр: time - число, которое надо перевести.*/
 function getTime(time) {
-	/* функция, переводящая числа из арабских в римские.
-	*  параметр: time - число, которое надо перевести.*/
 	var roman = ['L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
 	var arab = [50, 40, 10, 9, 5, 4, 1];
 	var answer = '';
@@ -38,9 +38,9 @@ function getTime(time) {
 	return answer;
 }
 
+/* функция, выводящая ответ на экран
+ *  параметр: time - строка, в которой хранится ответ, который надо вывести*/
 function print(time) {
-	/* функция, выводящая ответ на экран
-	*  параметр: time - строка, в которой хранится ответ, который надо вывести*/
 	var answer = ['', '', '', ''];
 
 	for (var count = 0; count < time.length; count++) {
@@ -54,9 +54,9 @@ function print(time) {
 	}
 }
 
+/* функция, переводящаю символ в ASCII вид
+ *  параметр: char - символ, который надо перевести*/
 function getASCII(char) {
-	/* функция, переводящаю символ в ASCII вид
-	*  параметр: char - символ, который надо перевести*/
 	var answer = new Array();
 
 	switch (char) {
